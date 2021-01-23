@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Classes\ButtonPressEventArgs.cs" />
     <Compile Include="Classes\LaunchpadException.cs" />
+    <Compile Include="Classes\LaunchpadService.cs" />
     <Compile Include="Enums\ButtonBrightness.cs" />
     <Compile Include="Enums\ButtonPressState.cs" />
     <Compile Include="Classes\LaunchpadButton.cs" />
@@ -67,9 +68,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="README.txt" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

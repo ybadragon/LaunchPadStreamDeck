@@ -9,18 +9,14 @@ namespace LaunchPadStreamDeck.API
 {
     class Program
     {
-        private static InputSimulator inputSimulator;
-        private static LaunchpadDevice device;
+        private static LaunchpadService launchpadService;
         static void Main(string[] args)
         {
             try
             {
-                device = new LaunchpadDevice(0, ButtonPressed, ToolBarButtonPressed, SideBarButtonPressed);
-                inputSimulator = new InputSimulator();
-                Console.WriteLine("Device Name: " + (device?.DeviceName ?? "Device not found"));
-                while (true)
-                {
-                }
+                launchpadService = new LaunchpadService(ButtonPressed, ToolBarButtonPressed, SideBarButtonPressed);
+                Console.WriteLine("Device Name: " + (launchpadService.Device?.DeviceName ?? "Device not found"));
+                launchpadService.WaitForInput();
             }
             catch (Exception ex)
             {
@@ -30,19 +26,19 @@ namespace LaunchPadStreamDeck.API
             }
         }
 
-        private static void SideBarButtonPressed(object arg1, ButtonPressEventArgs arg2)
+        private static void SideBarButtonPressed(object sender, ButtonPressEventArgs e)
         {
-            throw new NotImplementedException();
+            launchpadService.ToggleLight(e.Button);
         }
 
-        private static void ButtonPressed(object arg1, ButtonPressEventArgs arg2)
+        private static void ButtonPressed(object sender, ButtonPressEventArgs e)
         {
-            throw new NotImplementedException();
+            launchpadService.ToggleLight(e.Button);
         }
 
-        private static void ToolBarButtonPressed(object arg1, ButtonPressEventArgs arg2)
+        private static void ToolBarButtonPressed(object sender, ButtonPressEventArgs e)
         {
-            throw new NotImplementedException();
+            launchpadService.ToggleLight(e.Button);
         }
     }
 }
