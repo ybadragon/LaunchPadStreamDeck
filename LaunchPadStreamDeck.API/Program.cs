@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using WindowsInput;
 using WindowsInput.Native;
 using LaunchPadStreamDeck.API.Classes;
@@ -32,6 +33,15 @@ namespace LaunchPadStreamDeck.API
 
         private static void ButtonPressed(object sender, ButtonPressEventArgs e)
         {
+            e.Button.RunTimedEvent(5000, 250, () =>
+            {
+                e.Button.SetNextBrightness(BrightnessDirection.Ascending);
+                Console.WriteLine("Event Triggered");
+            }, () =>
+            {
+                e.Button.SetBrightness(ButtonBrightness.Off, ButtonBrightness.Off);
+                Console.WriteLine("Event Completed");
+            });
             Console.WriteLine($"ButtonPressed: {e.ButtonDescription}");
         }
 

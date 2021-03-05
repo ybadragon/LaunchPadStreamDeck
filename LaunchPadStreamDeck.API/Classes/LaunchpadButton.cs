@@ -1,4 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using LaunchPadStreamDeck.API.Enums;
 using Midi;
 
@@ -44,6 +48,24 @@ namespace LaunchPadStreamDeck.API.Classes
             SetBrightness(redBrightness, greenBrightness);
         }
 
+        public Task RunTimedEvent(long duration, long frequency, Action eventCallback = null, Action completedCallback = null)
+        {
+            return Task.Run(() =>
+            {
+                var autoEvent = new AutoResetEvent(false);
+                var checker = new InvocationChecker(duration / frequency);
+                Timer t = new Timer((stateInfo) =>
+                {
+                    eventCallback?.Invoke();
+                    Console.WriteLine($"InvocationCount: {checker.InvokeCount}");
+                    checker.CheckStatus(stateInfo);
+                }, autoEvent, 0, frequency);
+                autoEvent.WaitOne();
+                t.Dispose();
+                completedCallback?.Invoke();
+            });
+        }
+
         public void SetLED(int value)
         {
             if (this.mType == ButtonType.Toolbar)
@@ -79,17 +101,6 @@ namespace LaunchPadStreamDeck.API.Classes
             nextBrightness = nextBrightness > 3 ? wrapValue : nextBrightness;
 
             return (ButtonBrightness) nextBrightness;
-            //switch (brightness)
-            //{
-            //    case ButtonBrightness.Full:
-            //        return direction == BrightnessDirection.Descending ? ButtonBrightness.Medium : ButtonBrightness.Off;
-            //    case ButtonBrightness.Medium:
-            //        return direction == BrightnessDirection.Descending ?  ButtonBrightness.Low : ButtonBrightness.Full;
-            //    case ButtonBrightness.Low:
-            //        return direction == BrightnessDirection.Descending ? ButtonBrightness.Off : ButtonBrightness.Medium;
-            //    default:
-            //        return direction == BrightnessDirection.Descending ? ButtonBrightness.Full : ButtonBrightness.Low;
-            //}
         }
     }
 }

@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\ButtonPressEventArgs.cs" />
+    <Compile Include="Classes\InvocationChecker.cs" />
     <Compile Include="Classes\LaunchpadException.cs" />
     <Compile Include="Classes\LaunchpadService.cs" />
     <Compile Include="Enums\ButtonBrightness.cs" />
