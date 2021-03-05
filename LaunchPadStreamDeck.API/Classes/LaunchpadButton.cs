@@ -1,4 +1,5 @@
-﻿using LaunchPadStreamDeck.API.Enums;
+﻿using System.IO;
+using LaunchPadStreamDeck.API.Enums;
 using Midi;
 
 namespace LaunchPadStreamDeck.API.Classes
@@ -35,6 +36,14 @@ namespace LaunchPadStreamDeck.API.Classes
             this.SetLED(num);
         }
 
+        public void SetNextBrightness(BrightnessDirection direction)
+        {
+            var redBrightness = GetNextBrightness(RedBrightness, direction);
+            var greenBrightness = GetNextBrightness(GreenBrightness, direction);
+
+            SetBrightness(redBrightness, greenBrightness);
+        }
+
         public void SetLED(int value)
         {
             if (this.mType == ButtonType.Toolbar)
@@ -59,6 +68,28 @@ namespace LaunchPadStreamDeck.API.Classes
         {
             get => this.mState;
             internal set => this.mState = value;
+        }
+
+        private static ButtonBrightness GetNextBrightness(ButtonBrightness brightness, BrightnessDirection direction)
+        {
+            var brightnessIncrement = direction == BrightnessDirection.Descending ? -1 : 1;
+            var nextBrightness = (int) brightness + brightnessIncrement;
+            var wrapValue = direction == BrightnessDirection.Descending ? 3 : 0;
+            nextBrightness = nextBrightness < 0 ? wrapValue : nextBrightness;
+            nextBrightness = nextBrightness > 3 ? wrapValue : nextBrightness;
+
+            return (ButtonBrightness) nextBrightness;
+            //switch (brightness)
+            //{
+            //    case ButtonBrightness.Full:
+            //        return direction == BrightnessDirection.Descending ? ButtonBrightness.Medium : ButtonBrightness.Off;
+            //    case ButtonBrightness.Medium:
+            //        return direction == BrightnessDirection.Descending ?  ButtonBrightness.Low : ButtonBrightness.Full;
+            //    case ButtonBrightness.Low:
+            //        return direction == BrightnessDirection.Descending ? ButtonBrightness.Off : ButtonBrightness.Medium;
+            //    default:
+            //        return direction == BrightnessDirection.Descending ? ButtonBrightness.Full : ButtonBrightness.Low;
+            //}
         }
     }
 }

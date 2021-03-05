@@ -8,13 +8,13 @@ namespace LaunchPadStreamDeck.API.Enums
 {
     public enum SideButton
     {
-        Volume,
-        Pan,
-        SoundA,
-        SoundB,
-        Stop,
-        TrackOn,
-        Solo,
-        Arm,
+        A,
+        B,
+        C,
+        D,
+        E,
+        F,
+        G,
+        H
     }
 }

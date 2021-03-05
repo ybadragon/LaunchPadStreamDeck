@@ -11,26 +11,39 @@ namespace LaunchPadStreamDeck.API.Classes
     public class LaunchpadService
     {
         public LaunchpadDevice Device;
-        private bool waitForInput;
-        public LaunchpadService(
-            Action<object, ButtonPressEventArgs> buttonPressed,
-            Action<object, ButtonPressEventArgs> toolBarButtonPressed,
-            Action<object, ButtonPressEventArgs> sideBarButtonPressed)
+        private bool isListening;
+
+        public LaunchpadService()
         {
-            Device = new LaunchpadDevice(0, buttonPressed, toolBarButtonPressed, sideBarButtonPressed);
+            Device = new LaunchpadDevice(0);
         }
 
-        public void WaitForInput()
+        public void SetButtonPressed(Action<object, ButtonPressEventArgs> buttonPressed)
         {
-            waitForInput = true;
-            while (waitForInput)
+            Device.ButtonPressed += (o, ea) => buttonPressed(o, ea);
+        }
+
+        public void SetButtonUp(Action<object, ButtonPressEventArgs> buttonUp)
+        {
+            Device.ButtonUp += (o, ea) => buttonUp(o, ea);
+        }
+
+        public void SetButtonDown(Action<object, ButtonPressEventArgs> buttonDown)
+        {
+            Device.ButtonDown += (o, ea) => buttonDown(o, ea);
+        }
+
+        public void StartListening()
+        {
+            isListening = true;
+            while (isListening)
             { 
             }
         }
 
-        public void StopWaitingForInput()
+        public void StopListening()
         {
-            waitForInput = false;
+            isListening = false;
         }
 
         public void ToggleLight(LaunchpadButton button)
@@ -76,7 +89,5 @@ namespace LaunchPadStreamDeck.API.Classes
         {
             return Device.GetButton(toolbarButton);
         }
-
-
     }
 }

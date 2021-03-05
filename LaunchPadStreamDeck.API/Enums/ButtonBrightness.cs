@@ -7,4 +7,10 @@
         Medium,
         Full,
     }
+
+    public enum BrightnessDirection
+    {
+        Ascending,
+        Descending
+    }
 }

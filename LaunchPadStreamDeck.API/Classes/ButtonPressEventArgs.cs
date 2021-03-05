@@ -49,5 +49,7 @@ namespace LaunchPadStreamDeck.API.Classes
         public int Index => this.mIndex;
 
         public LaunchpadButton Button => this.mButton;
+
+        public string ButtonDescription => $"ButtonType: {Type}, ButtonIndex: {Index}, ButtonX: {X}, ButtonY {Y}";
     }
 }

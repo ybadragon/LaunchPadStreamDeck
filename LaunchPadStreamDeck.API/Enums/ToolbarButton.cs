@@ -8,13 +8,13 @@ namespace LaunchPadStreamDeck.API.Enums
 {
     public enum ToolbarButton
     {
-        Up,
-        Down,
-        Left,
-        Right,
-        Session,
-        User1,
-        User2,
-        Mixer,
+        One,
+        Two,
+        Three,
+        Four,
+        Five,
+        Six,
+        Seven,
+        Eight,
     }
 }

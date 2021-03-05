@@ -4,6 +4,7 @@ using System.Diagnostics;
 using WindowsInput;
 using WindowsInput.Native;
 using LaunchPadStreamDeck.API.Classes;
+using LaunchPadStreamDeck.API.Enums;
 
 namespace LaunchPadStreamDeck.API
 {
@@ -14,9 +15,12 @@ namespace LaunchPadStreamDeck.API
         {
             try
             {
-                launchpadService = new LaunchpadService(ButtonPressed, ToolBarButtonPressed, SideBarButtonPressed);
+                launchpadService = new LaunchpadService();
+                launchpadService.SetButtonPressed(ButtonPressed);
+                launchpadService.SetButtonDown(ButtonDown);
+                launchpadService.SetButtonUp(ButtonUp);
                 Console.WriteLine("Device Name: " + (launchpadService.Device?.DeviceName ?? "Device not found"));
-                launchpadService.WaitForInput();
+                launchpadService.StartListening();
             }
             catch (Exception ex)
             {
@@ -26,19 +30,19 @@ namespace LaunchPadStreamDeck.API
             }
         }
 
-        private static void SideBarButtonPressed(object sender, ButtonPressEventArgs e)
-        {
-            launchpadService.ToggleLight(e.Button);
-        }
-
         private static void ButtonPressed(object sender, ButtonPressEventArgs e)
         {
-            launchpadService.ToggleLight(e.Button);
+            Console.WriteLine($"ButtonPressed: {e.ButtonDescription}");
         }
 
-        private static void ToolBarButtonPressed(object sender, ButtonPressEventArgs e)
+        private static void ButtonUp(object sender, ButtonPressEventArgs e)
         {
-            launchpadService.ToggleLight(e.Button);
+            Console.WriteLine($"ButtonUp: {e.ButtonDescription}");
+        }
+
+        private static void ButtonDown(object sender, ButtonPressEventArgs e)
+        {
+            Console.WriteLine($"ButtonDown: {e.ButtonDescription}");
         }
     }
 }
