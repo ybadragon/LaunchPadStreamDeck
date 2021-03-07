@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WindowsInput;
+using LaunchPadStreamDeck.API.Classes;
 using LaunchPadStreamDeck.API.Enums;
 
-namespace LaunchPadStreamDeck.API.Classes
+namespace LaunchPadStreamDeck.API.Services
 {
     public class LaunchpadService
     {

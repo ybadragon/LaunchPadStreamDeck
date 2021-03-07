@@ -1,5 +1,6 @@
 ﻿using System;
 using LaunchPadStreamDeck.API.Enums;
+using LaunchPadStreamDeck.API.Models;
 
 namespace LaunchPadStreamDeck.API.Classes
 {
