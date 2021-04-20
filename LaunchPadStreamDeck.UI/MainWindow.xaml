@@ -5,14 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LaunchPadStreamDeck.UI"
         mc:Ignorable="d"
-        Height="800" Width="800" ResizeMode="NoResize">
-    <Grid Background="DimGray">
-        <Grid.Resources >
-            <Style TargetType="Border" >
-                <Setter Property="Padding" Value="2,2,2,2" />
-            </Style>
-        </Grid.Resources>
+        Height="830" Width="790" ResizeMode="NoResize" Background="DimGray">
+    <Grid Margin="10">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -20,89 +16,32 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <Border Grid.Row="0" Grid.Column="0">
-            <Path Fill="WhiteSmoke" x:Name="TopLeft" MouseDown="Button_MouseDown">
-                <Path.Data>
-                    <CombinedGeometry GeometryCombineMode="Exclude">
-                        <CombinedGeometry.Geometry1>
-                            <RectangleGeometry Rect="0,0,20,20"/>
-                        </CombinedGeometry.Geometry1>
-                        <CombinedGeometry.Geometry2>
-                            <PathGeometry>
-                                <PathFigure StartPoint="15, 20">
-                                    <PathFigure.Segments>
-                                        <ArcSegment Point="20,15" Size="7,7" SweepDirection="Clockwise"/>
-                                        <LineSegment Point="20, 20"/>
-                                    </PathFigure.Segments>
-                                </PathFigure>
-                            </PathGeometry>
-                        </CombinedGeometry.Geometry2>
-                    </CombinedGeometry>
-                </Path.Data>
-            </Path>
-        </Border>
-        <Border Grid.Row="0" Grid.Column="1">
-            <Path Fill="WhiteSmoke"  x:Name="TopRight" MouseDown="Button_MouseDown">
-                <Path.Data>
-                    <CombinedGeometry GeometryCombineMode="Exclude">
-                        <CombinedGeometry.Geometry1>
-                            <RectangleGeometry Rect="0,0,20,20"/>
-                        </CombinedGeometry.Geometry1>
-                        <CombinedGeometry.Geometry2>
-                            <PathGeometry>
-                                <PathFigure StartPoint="0, 15">
-                                    <PathFigure.Segments>
-                                        <ArcSegment Point="5,20" Size="7,7"  SweepDirection="Clockwise"/>
-                                        <LineSegment Point="0,20"/>
-                                    </PathFigure.Segments>
-                                </PathFigure>
-                            </PathGeometry>
-                        </CombinedGeometry.Geometry2>
-                    </CombinedGeometry>
-                </Path.Data>
-            </Path>
-        </Border>
-        <Border Grid.Row="1" Grid.Column="0">
-            <Path Fill="WhiteSmoke"  x:Name="BottomLeft" MouseDown="Button_MouseDown">
-                <Path.Data>
-                    <CombinedGeometry GeometryCombineMode="Exclude">
-                        <CombinedGeometry.Geometry1>
-                            <RectangleGeometry Rect="0,0,20,20"/>
-                        </CombinedGeometry.Geometry1>
-                        <CombinedGeometry.Geometry2>
-                            <PathGeometry>
-                                <PathFigure StartPoint="15,0">
-                                    <PathFigure.Segments>
-                                        <ArcSegment Point="20,5" Size="7,7"  SweepDirection="Counterclockwise"/>
-                                        <LineSegment Point="20,0"/>
-                                    </PathFigure.Segments>
-                                </PathFigure>
-                            </PathGeometry>
-                        </CombinedGeometry.Geometry2>
-                    </CombinedGeometry>
-                </Path.Data>
-            </Path>
-        </Border>
-        <Border Grid.Row="1" Grid.Column="1">
-            <Path Fill="WhiteSmoke" x:Name="BottomRight" MouseDown="Button_MouseDown">
-                <Path.Data>
-                    <CombinedGeometry GeometryCombineMode="Exclude">
-                        <CombinedGeometry.Geometry1>
-                            <RectangleGeometry Rect="0,0,20,20"/>
-                        </CombinedGeometry.Geometry1>
-                        <CombinedGeometry.Geometry2>
-                            <PathGeometry>
-                                <PathFigure StartPoint="0,5">
-                                    <PathFigure.Segments>
-                                        <ArcSegment Point="5,0" Size="7,7"  SweepDirection="Counterclockwise"/>
-                                        <LineSegment Point="0,0"/>
-                                    </PathFigure.Segments>
-                                </PathFigure>
-                            </PathGeometry>
-                        </CombinedGeometry.Geometry2>
-                    </CombinedGeometry>
-                </Path.Data>
-            </Path>
-        </Border>
+        <Grid Grid.Row="0" Grid.Column="0" Margin="-0,0,0,5" x:Name="ProfileButtons">
+            <Grid.Resources >
+                <Style TargetType="Border" >
+                    <Setter Property="Padding" Value="2,2,2,2" />
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Padding" Value="1,1,1,1"></Setter>
+                </Style>
+            </Grid.Resources>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="0"  x:Name="EventButtons">
+            <Grid.Resources >
+                <Style TargetType="Border" >
+                    <Setter Property="Padding" Value="2,2,2,2" />
+                </Style>
+            </Grid.Resources>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="1" x:Name="SideButtons">
+            <Grid.Resources >
+                <Style TargetType="Border" >
+                    <Setter Property="Padding" Value="2,2,2,2" />
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Padding" Value="1,1,1,1"></Setter>
+                </Style>
+            </Grid.Resources>
+        </Grid>
     </Grid>
 </Window>

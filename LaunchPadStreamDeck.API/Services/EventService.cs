@@ -130,8 +130,6 @@ namespace LaunchPadStreamDeck.API.Services
                     events.AddRange(tempEvents);
                 }
             }
-
-            return;
         }
     }
 }
