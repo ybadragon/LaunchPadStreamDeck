@@ -26,7 +26,8 @@ namespace LaunchPadStreamDeck.UI
     {
         private readonly Color textColor = (Color)(ColorConverter.ConvertFromString("WhiteSmoke") ?? Color.FromRgb(0, 0, 0));
         private readonly Color overlayColor = (Color)(ColorConverter.ConvertFromString("WhiteSmoke") ?? Color.FromRgb(0, 0, 0));
-        private readonly Color radialColor = Color.FromRgb(255, 0, 0);
+        private readonly Color radialInnerColor = Color.FromRgb(255, 0, 0);
+        private readonly Color radialOuterColor = Color.FromArgb(153, 255, 172, 172);
         private readonly Brush fillBrush;
         private readonly Brush textBrush;
         private readonly List<int> rows = Enumerable.Range(0, 8).ToList();
@@ -86,26 +87,43 @@ namespace LaunchPadStreamDeck.UI
             }
         }
 
-        private LaunchpadButton GetLaunchpadButton(FrameworkElement button)
+        private LaunchpadButton GetLaunchpadButton(FrameworkElement element)
         {
-            if (button.Name.StartsWith("Profile"))
+            int index = Convert.ToInt32(element.Name.Last().ToString());
+            if (element.Name.StartsWith("Profile"))
             {
-                var parent = button.Parent as FrameworkElement;
-                var root = parent.Parent as Grid;
-                var i = root.Children.IndexOf(parent);
-                return _launchPadService.GetToolBarButton(i);
+                return _launchPadService.GetButton(ButtonType.Toolbar, index);
             }
 
-            return _launchPadService.GetToolBarButton(0);
+            if (element.Name.StartsWith("Side"))
+            {
+                return _launchPadService.GetButton(ButtonType.Side, index);
+            }
+
+            var X = Convert.ToInt32(element.Name.Substring(element.Name.IndexOf("X") + 1, 1));
+            var Y = Convert.ToInt32(element.Name.Substring(element.Name.IndexOf("Y") + 1, 1));
+
+            var button = _launchPadService.Device[X, Y];
+            return button;
         }
 
-        //private ButtonPressEventArgs LaunchpadButtonEventArgs(LaunchpadButton button)
-        //{
-        //    if (button.ButtonType == ButtonType.Toolbar)
-        //    {
-        //        return new ButtonPressEventArgs(Si)
-        //    }
-        //}
+        private ButtonPressEventArgs GetLaunchpadButtonEventArgs(LaunchpadButton button, FrameworkElement element)
+        {
+            if (button.ButtonType == ButtonType.Toolbar)
+            {
+                return new ButtonPressEventArgs((ToolbarButton) button.mIndex, button);
+            }
+            if (button.ButtonType == ButtonType.Side)
+            {
+                return new ButtonPressEventArgs((SideButton) button.mIndex, button);
+            }
+
+            var X = Convert.ToInt32(element.Name.Substring(element.Name.IndexOf("X") + 1, 1));
+            var Y = Convert.ToInt32(element.Name.Substring(element.Name.IndexOf("Y") + 1, 1));
+
+
+            return new ButtonPressEventArgs(X, Y, button, button.mIndex);
+        }
 
         private FrameworkElement GetProfileButton(ButtonPressEventArgs e)
         {
@@ -126,7 +144,6 @@ namespace LaunchPadStreamDeck.UI
 
         private void HandleButtonUp(FrameworkElement button, ButtonPressEventArgs e)
         {
-            MessageBox.Show(button.Name, "Clicked", MessageBoxButton.OK);
             SetButtonColor(button, e, ButtonPressState.Up);
         }
 
@@ -140,21 +157,25 @@ namespace LaunchPadStreamDeck.UI
             {
                 ((Border) button).Child = GetProfilePath(fillBrush);
             }
-
-            _launchPadService.SetButtonBrightness(e.Button, ButtonBrightness.Full, ButtonBrightness.Off);
         }
 
         private void SetButtonColor(FrameworkElement button, ButtonPressEventArgs e, ButtonPressState buttonState)
         {
-            var fillColor = buttonState == ButtonPressState.Up ? overlayColor : radialColor;
-            var redBrightness = buttonState == ButtonPressState.Up ? ButtonBrightness.Off : ButtonBrightness.Full;
+            var outerColor = e.Button.RedBrightness == ButtonBrightness.Full ? overlayColor : radialOuterColor;
+            var fillColor = e.Button.RedBrightness == ButtonBrightness.Full ? overlayColor : radialInnerColor;
+            var redBrightness = e.Button.RedBrightness == ButtonBrightness.Full
+                ? ButtonBrightness.Off
+                : ButtonBrightness.Full;
+            var newBrush = new RadialGradientBrush(fillColor, outerColor);
+            newBrush.RadiusX = .6;
+            newBrush.RadiusY = .6;
             if (e.Type == ButtonType.Grid)
             {
-                ((Border)button).Child = GetPath(e.Y, e.X, fillBrush);
+                ((Border)button).Child = GetPath(e.Y, e.X, newBrush);
             }
             else
             {
-                ((Border)button).Child = GetProfilePath(new RadialGradientBrush(fillColor, overlayColor));
+                ((Border)button).Child = GetProfilePath(newBrush);
             }
 
             _launchPadService.SetButtonBrightness(e.Button, redBrightness, ButtonBrightness.Off);
@@ -208,7 +229,7 @@ namespace LaunchPadStreamDeck.UI
                     FontSize = 20
                 };
                 var border = new Border { Child = GetProfilePath(fillBrush), Name = $"Side{i}", Width = rectWidth, Height = rectHeight + 4 };
-                border.MouseDown += Button_MouseUp;
+                border.MouseUp += Button_MouseUp;
                 var stack = new StackPanel { Orientation = Orientation.Horizontal };
                 stack.Children.Add(border);
                 stack.Children.Add(textBlock);
@@ -232,7 +253,7 @@ namespace LaunchPadStreamDeck.UI
                 for (int j = 0; j < columns.Count; j++)
                 {
                     var border = new Border { Child = GetPath(i, j, fillBrush), Name = $"EventY{i}X{j}" };
-                    border.MouseDown += Button_MouseUp;
+                    border.MouseUp += Button_MouseUp;
                     EventButtons.Children.Add(border);
                     Grid.SetRow(border, i);
                     Grid.SetColumn(border, j);
@@ -320,8 +341,8 @@ namespace LaunchPadStreamDeck.UI
         {
             FrameworkElement element = sender as FrameworkElement;
             var button = GetLaunchpadButton(element);
-            //var eventArgs = GetLaunchpadButtonEventArgs(button);
-            //HandleButtonUp(element, eventArgs);
+            var eventArgs = GetLaunchpadButtonEventArgs(button, element);
+            HandleButtonUp(element, eventArgs);
         }
     }
 }

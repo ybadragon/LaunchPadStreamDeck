@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using LaunchPadStreamDeck.API.Classes;
 using LaunchPadStreamDeck.API.Enums;
 
@@ -84,6 +85,26 @@ namespace LaunchPadStreamDeck.API.Services
         public LaunchpadButton GetToolBarButton(ToolbarButton toolbarButton)
         {
             return Device.GetButton(toolbarButton);
+        }
+
+        public LaunchpadButton GetEventButton(int index)
+        {
+            var x = index % 8;
+            var y = index / 8;
+            return Device[x, y];
+        }
+
+        public LaunchpadButton GetButton(ButtonType buttonType, int index)
+        {
+            switch (buttonType)
+            {
+                case ButtonType.Toolbar:
+                    return GetToolBarButton(index);
+                case ButtonType.Side:
+                    return GetSideBarButton(index);
+                default:
+                    return GetEventButton(index);
+            }
         }
     }
 }
