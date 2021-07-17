@@ -131,7 +131,7 @@ namespace LaunchPadStreamDeck.API.Classes
 
         public LaunchpadButton GetButton(SideButton sideButton) => mSide[(int)sideButton];
 
-        private LaunchpadButton GetButton(Pitch pitch)
+        public LaunchpadButton GetButton(Pitch pitch)
         {
             int index1 = (int)pitch % 16;
             int index2 = (int)pitch / 16;

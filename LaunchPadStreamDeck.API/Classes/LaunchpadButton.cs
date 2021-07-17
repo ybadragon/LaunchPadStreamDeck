@@ -92,6 +92,12 @@ namespace LaunchPadStreamDeck.API.Classes
             internal set => this.mState = value;
         }
 
+        public ButtonType ButtonType
+        {
+            get => this.mType;
+            internal set => this.mType = value;
+        }
+
         private static ButtonBrightness GetNextBrightness(ButtonBrightness brightness, BrightnessDirection direction)
         {
             var brightnessIncrement = direction == BrightnessDirection.Descending ? -1 : 1;
