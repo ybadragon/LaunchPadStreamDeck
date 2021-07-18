@@ -20,6 +20,7 @@ namespace LaunchPadStreamDeck.API
         {
             try
             {
+                //testing repo settings
                 launchpadService = new LaunchpadService();
                 launchpadService.SetButtonPressed(ButtonPressed);
                 launchpadService.SetButtonDown(ButtonDown);
